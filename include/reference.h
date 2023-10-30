@@ -5,7 +5,5 @@
 #include "common.h"
 
 void referenceAxis(Axis *ax);
-void referenceAxis2(Axis *ax);
-void referenceAxis3(Axis *ax);
 
 #endif

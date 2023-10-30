@@ -5,3 +5,5 @@
 .vscode/ipch
 /*.code-workspace
 /.vscode/extensions.json
+/design-files/*.FCStd1
+/design-files/stl
