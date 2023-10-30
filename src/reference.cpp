@@ -21,7 +21,7 @@ void referenceAxis(Axis *ax)
     vector<float> areaMesurementValues;
 
     bool isInArea = false;
-    for (steps_t x = 0; x < N_STEPS_TOTAL; x++)
+    for (steps_t x = 0; x < ax->TotalSteps; x++)
     {
 
         step(ax);
@@ -53,7 +53,7 @@ void referenceAxis(Axis *ax)
 
             if (!isInArea)
             {
-                cout << "In Area now" << endl;
+                cout << "in ->" << endl;
             }
             isInArea = true;
 
@@ -63,7 +63,7 @@ void referenceAxis(Axis *ax)
 
         if (!allTrue && isInArea)
         {
-            cout << "Out of Area now" << endl;
+            cout << "<- out" << endl;
             break;
         }
     }
@@ -72,7 +72,7 @@ void referenceAxis(Axis *ax)
     size_t Idx = std::distance(areaMesurementValues.begin(), std::max_element(areaMesurementValues.begin(), areaMesurementValues.end()));
 
     // offset to steps
-    position_t offset = (position_t)((ax->ReferenceOffset / 360) * (float)N_STEPS_TOTAL);
+    position_t offset = (position_t)((ax->ReferenceOffset / 360) * (float)ax->TotalSteps);
     position_t correctedRef = areaMeasurementsPositions[Idx] + offset;
 
     cout << "refpos: " << areaMeasurementsPositions[Idx] << " offset correction (steps): " << offset << " corrected pos: " << correctedRef << endl;

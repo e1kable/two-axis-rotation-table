@@ -12,7 +12,6 @@ using namespace std;
 
 typedef int32_t position_t;
 typedef uint32_t steps_t;
-extern const steps_t N_STEPS_TOTAL;
 
 struct Axis
 {
@@ -20,6 +19,10 @@ struct Axis
     const uint8_t DirectionPin;
     const uint8_t HallPin;
     const float ReferenceOffset;
+
+    const steps_t TotalSteps;
+
+    const float MaxDPhiDt;
 
     bool IsInit;
     position_t Position;

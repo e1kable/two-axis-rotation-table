@@ -2,10 +2,16 @@
 
 #include "common.h"
 
-const steps_t N_STEPS_TOTAL = N_STEPS * N_MICRO_STEPS;
-
-struct Axis AX_AZ = {2, 5, A5, REFERENCE_OFFSET_CORRECTION_AZ, false};
-struct Axis AX_EL = {3, 6, A4, REFERENCE_OFFSET_CORRECTION_EL, false};
+struct Axis AX_AZ = {2, 5, A5,
+                     REFERENCE_OFFSET_CORRECTION_AZ,
+                     N_STEPS_AZ *N_MICRO_STEPS_AZ,
+                     MAX_DPHI_DT_AZ,
+                     false};
+struct Axis AX_EL = {3, 6, A4,
+                     REFERENCE_OFFSET_CORRECTION_EL,
+                     N_STEPS_EL *N_MICRO_STEPS_EL,
+                     MAX_DPHI_DT_EL,
+                     false};
 
 void initAxis(Axis *ax)
 {
@@ -36,8 +42,8 @@ void step(Axis *axis, bool reverse)
     }
 
     // limit the angular speed with MAX_DPHI_DT
-    float phiPerstep = 360 / (float)N_STEPS_TOTAL;
-    float tminperstep = phiPerstep / (float)MAX_DPHI_DT * 1000; // in ms
+    float phiPerstep = 360 / (float)axis->TotalSteps;
+    float tminperstep = phiPerstep / axis->MaxDPhiDt * 1000; // in ms
 
     int64_t waitTime = millis() - axis->LastStepTime + tminperstep;
     if (waitTime > 0)

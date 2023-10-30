@@ -18,6 +18,8 @@ void serializeAxisStatus(Axis *ax)
     doc["DirectionPin"] = ax->DirectionPin;
     doc["HallPin"] = ax->HallPin;
     doc["ReferenceOffset"] = ax->ReferenceOffset;
+    doc["TotalSteps"] = ax->TotalSteps;
+    doc["MaxDPhiDt"] = ax->MaxDPhiDt;
     doc["IsInit"] = ax->IsInit;
     doc["Position"] = ax->Position;
     doc["LastStepTime"] = ax->LastStepTime;
