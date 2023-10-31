@@ -71,11 +71,10 @@ void referenceAxis(Axis *ax)
     // find max index
     size_t Idx = std::distance(areaMesurementValues.begin(), std::max_element(areaMesurementValues.begin(), areaMesurementValues.end()));
 
-    // offset to steps
+    // // // offset to steps
     position_t offset = (position_t)((ax->ReferenceOffset / 360) * (float)ax->TotalSteps);
     position_t correctedRef = areaMeasurementsPositions[Idx] + offset;
 
-    cout << "refpos: " << areaMeasurementsPositions[Idx] << " offset correction (steps): " << offset << " corrected pos: " << correctedRef << endl;
     ax->IsReferenced = true;
     ax->ReferencePosition = correctedRef;
 

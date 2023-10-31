@@ -149,6 +149,25 @@ void parseSerialCommands()
             referenceAxis(selectedAx);
             cout << CMD_OK << endl;
         }
+        else if (cmdParts[0] == "readhall")
+        {
+            if (cmdParts.size() != 3)
+            {
+
+                cout << ERR_UNKNOWN_CMD << " Size (" << cmdParts.size() << ")" << endl;
+                return;
+            }
+            Axis *selectedAx = parseAxis(cmdParts[1]);
+            if (selectedAx == NULL)
+            {
+                cout << ERR_UNKNOWN_AX << endl;
+                return;
+            }
+
+            int Nmean = atoi(cmdParts[2].c_str());
+
+            cout << readHall(selectedAx, Nmean) << endl;
+        }
         else
         {
             cout << ERR_UNKNOWN_CMD << " (" << cmdParts[0] << ")" << endl;
