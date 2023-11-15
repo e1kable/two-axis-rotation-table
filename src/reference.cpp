@@ -14,11 +14,12 @@ void referenceAxis(Axis *ax)
     float lastMeasurement = readHall(ax);
 
     size_t LEN_DBDPHI_HIST = 3;
-    float dbdphi_hist[LEN_DBDPHI_HIST];
-    size_t dbdphi_hist_ptr = 0;
 
-    vector<position_t> areaMeasurementsPositions;
-    vector<float> areaMesurementValues;
+    size_t dbdphi_hist_ptr = 0;
+    vector<float> dbdphi_hist(LEN_DBDPHI_HIST);
+
+    position_t maxPos = 0;
+    float maxPosValue = 0;
 
     bool isInArea = false;
     for (steps_t x = 0; x < ax->TotalSteps; x++)
@@ -45,8 +46,9 @@ void referenceAxis(Axis *ax)
         cout << "Pos: " << ax->Position << " Val_mean: " << val_mean << " dB/dphi " << dbdphi << endl;
 
         // check if last entries are above threshold
-        bool allTrue = assertAllTrue<float>(dbdphi_hist, LEN_DBDPHI_HIST, [](float h) -> bool
-                                            { return h > DB_DPHI_THRES; });
+
+        bool allTrue = all_of(dbdphi_hist.begin(), dbdphi_hist.end(), [](float f)
+                              { return f > DB_DPHI_THRES; });
 
         if (allTrue) // if is in region
         {
@@ -57,8 +59,11 @@ void referenceAxis(Axis *ax)
             }
             isInArea = true;
 
-            areaMeasurementsPositions.push_back(ax->Position);
-            areaMesurementValues.push_back(dbdphi);
+            if (dbdphi > maxPosValue)
+            {
+                maxPosValue = dbdphi;
+                maxPos = ax->Position;
+            }
         }
 
         if (!allTrue && isInArea)
@@ -68,12 +73,9 @@ void referenceAxis(Axis *ax)
         }
     }
 
-    // find max index
-    size_t Idx = std::distance(areaMesurementValues.begin(), std::max_element(areaMesurementValues.begin(), areaMesurementValues.end()));
-
-    // // // offset to steps
+    // offset to steps
     position_t offset = (position_t)((ax->ReferenceOffset / 360) * (float)ax->TotalSteps);
-    position_t correctedRef = areaMeasurementsPositions[Idx] + offset;
+    position_t correctedRef = maxPos + offset;
 
     ax->IsReferenced = true;
     ax->ReferencePosition = correctedRef;

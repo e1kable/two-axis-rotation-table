@@ -1,6 +1,8 @@
 #include <Arduino.h>
+#include <ArduinoSTL.h>
 
 #include "common.h"
+#include "sloping.h"
 
 struct Axis AX_AZ = {2, 5, A5,
                      REFERENCE_OFFSET_CORRECTION_AZ,
@@ -44,18 +46,17 @@ void step(Axis *axis, bool reverse)
     // limit the angular speed with MAX_DPHI_DT
     float phiPerstep = 360 / (float)axis->TotalSteps;
     float tminperstep = phiPerstep / axis->MaxDPhiDt * 1000; // in ms
+    float waitTime = (float)tminperstep - ((float)millis() - (float)axis->LastStepTime);
 
-    int64_t waitTime = millis() - axis->LastStepTime + tminperstep;
-    if (waitTime > 0)
+    if (waitTime > 0 && axis->LastStepTime != 0)
     {
-        delay(waitTime);
+        delay((uint64_t)waitTime);
     }
 
     digitalWrite(axis->StepPin, HIGH);
     delayMicroseconds(500);
     digitalWrite(axis->StepPin, LOW);
     delayMicroseconds(500);
-
     axis->LastStepTime = millis();
 }
 
@@ -66,13 +67,23 @@ void step(Axis *axis)
 
 void steps(Axis *ax, steps_t nsteps, bool reverse)
 {
-
-    for (uint32_t i = 0; i < abs(nsteps); i++)
+    if (IS_ENABLE_SLOPING)
     {
-        step(ax, reverse);
+        float phi = (360.0 / ax->TotalSteps) * nsteps; // convert to an angle
+        steps_t NstepsSlope;                           // not really needed here
+        for (size_t i = 0; i < nsteps; i++)
+        {
+            step(ax, reverse);
+            delay(generateSlopeSteps(i, phi, MAX_DPHI_DT_AZ, AX_AZ.TotalSteps, NstepsSlope));
+        }
     }
-
-    delay(250); // wait for some time to settle down
+    else
+    {
+        for (uint32_t i = 0; i < nsteps; i++)
+        {
+            step(ax, reverse);
+        }
+    }
 }
 void steps(Axis *ax, steps_t nsteps)
 {

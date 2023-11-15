@@ -40,19 +40,25 @@ void step(Axis *axis, bool reverse);
 void step(Axis *axis);
 void steps(Axis *ax, steps_t steps);
 void steps(Axis *ax, steps_t steps, bool reverse);
+
 void moveTo(Axis *ax, position_t steps);
 float readHall(Axis *ax, size_t Nmean);
 float readHall(Axis *ax);
 
-template <class T>
-bool assertAllTrue(T array[], size_t size, bool (*func)(T))
+template <class InputIt, class UnaryPredicate>
+InputIt find_if_not(InputIt first, InputIt last, UnaryPredicate q)
 {
-    for (size_t k = 0; k < size; k++)
-    {
-        if (!func(array[k]))
-            return false;
-    }
-    return true;
+    for (; first != last; ++first)
+        if (!q(*first))
+            return first;
+
+    return last;
+}
+
+template <class InputIt, class UnaryPredicate>
+constexpr bool all_of(InputIt first, InputIt last, UnaryPredicate p)
+{
+    return find_if_not(first, last, p) == last;
 }
 
 template <class ForwardIt, class T>
@@ -85,4 +91,5 @@ vector<size_t> sort_indexes(const vector<T> &v)
 
     return idx;
 }
+
 #endif
