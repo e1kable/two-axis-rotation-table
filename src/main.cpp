@@ -11,6 +11,7 @@ void setup()
 {
 
   Serial.begin(SERIAL_BAUD);
+  cout << CMD_OK << endl;
 }
 
 void loop()
