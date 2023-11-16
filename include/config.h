@@ -23,7 +23,7 @@
 #define N_MEAN_DEFAULT_HALL_FINE_READOUT 400
 #endif
 
-#define DB_DPHI_THRES 10
+#define DB_DPHI_THRES 20
 #define REFERENCE_OFFSET_CORRECTION_AZ -3.8  // in degrees
 #define REFERENCE_OFFSET_CORRECTION_EL -11.5 // in degrees
 

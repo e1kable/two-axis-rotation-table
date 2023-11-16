@@ -53,7 +53,7 @@ void referenceAxis(Axis *ax)
             val_mean = readHall(ax);
         }
 
-        float dbdphi = val_mean - lastMeasurement;
+        float dbdphi = (val_mean - lastMeasurement) / phiPerstep;
         dbdphi_hist[dbdphi_hist_ptr++] = dbdphi;
         dbdphi_hist_ptr = dbdphi_hist_ptr % LEN_DBDPHI_HIST;
         lastMeasurement = val_mean;
