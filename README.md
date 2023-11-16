@@ -35,3 +35,5 @@ To get started with your own rotation table, check out the documentation in the 
 - `/hardware`: Schematics and board layouts for the CNC shield.
 
 Feel free to contribute, report issues, or explore customization options. Happy rotating!
+
+<video src="docs/media/rotation-table-demo.mp4" controls title="Rotation Table Demo"></video>
