@@ -1,17 +1,22 @@
 #include <Arduino.h>
+
+#ifdef ARDUINO_AVR_UNO
 #include <ArduinoSTL.h>
-// #include <EEPROM.h>
+#endif
 
 #include "common.h"
-#include "reference.h"
 #include "comm.h"
-#include "sloping.h"
+#include "reference.h"
+
+using namespace std;
 
 void setup()
 {
+  while (!Serial)
+    ;
 
   Serial.begin(SERIAL_BAUD);
-  cout << CMD_OK << endl;
+  Serial.println(CMD_OK.c_str());
 }
 
 void loop()

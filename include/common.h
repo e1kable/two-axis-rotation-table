@@ -45,6 +45,8 @@ void moveTo(Axis *ax, position_t steps);
 float readHall(Axis *ax, size_t Nmean);
 float readHall(Axis *ax);
 
+#ifdef ARDUINO_AVR_UNO
+
 template <class InputIt, class UnaryPredicate>
 InputIt find_if_not(InputIt first, InputIt last, UnaryPredicate q)
 {
@@ -54,42 +56,11 @@ InputIt find_if_not(InputIt first, InputIt last, UnaryPredicate q)
 
     return last;
 }
-
 template <class InputIt, class UnaryPredicate>
 constexpr bool all_of(InputIt first, InputIt last, UnaryPredicate p)
 {
     return find_if_not(first, last, p) == last;
 }
-
-template <class ForwardIt, class T>
-constexpr // since C++20
-    void
-    iota(ForwardIt first, ForwardIt last, T value)
-{
-    while (first != last)
-    {
-        *first++ = value;
-        ++value;
-    }
-}
-
-template <typename T>
-vector<size_t> sort_indexes(const vector<T> &v)
-{
-
-    // initialize original index locations
-    vector<size_t> idx(v.size());
-    iota(idx.begin(), idx.end(), 0);
-
-    // sort indexes based on comparing values in v
-    // using std::stable_sort instead of std::sort
-    // to avoid unnecessary index re-orderings
-    // when v contains elements of equal values
-    stable_sort(idx.begin(), idx.end(),
-                [&v](size_t i1, size_t i2)
-                { return v[i1] < v[i2]; });
-
-    return idx;
-}
+#endif
 
 #endif

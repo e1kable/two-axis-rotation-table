@@ -11,8 +11,17 @@
 #define MAX_DPHI_DT_EL 40.0
 
 // Hall and Referencing configuration
+#define REFERENCE_ANGULAR_VELOCITY 10
+
+#ifdef ARDUINO_ARCH_RENESAS_UNO
+#define N_MEAN_DEFAULT_HALL_READOUT 1000
+#define N_MEAN_DEFAULT_HALL_FINE_READOUT 4000
+#endif
+
+#ifdef ARDUINO_AVR_UNO
 #define N_MEAN_DEFAULT_HALL_READOUT 100
-#define N_MEAN_DEFAULT_HALL_FINE_READOUT 200
+#define N_MEAN_DEFAULT_HALL_FINE_READOUT 400
+#endif
 
 #define DB_DPHI_THRES 10                    // 10 is good for 1/4 step
 #define REFERENCE_OFFSET_CORRECTION_AZ -3.8 // in degrees

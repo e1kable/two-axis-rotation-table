@@ -1,7 +1,11 @@
 
 #include <Arduino.h>
+
+#ifdef ARDUINO_AVR_UNO
 #include <ArduinoSTL.h>
 #include <sstream>
+#endif
+
 #define ARDUINOJSON_USE_LONG_LONG 1
 #include <ArduinoJson.h>
 
@@ -10,6 +14,33 @@
 #include "reference.h"
 
 using namespace std;
+
+#ifdef ARDUINO_AVR_UNO
+bool atob(string str)
+{
+    transform(str.begin(), str.end(), str.begin(), ::tolower);
+    istringstream is(str);
+    bool b;
+    is >> boolalpha >> b;
+    return b;
+}
+
+#endif
+
+#ifdef ARDUINO_ARCH_RENESAS_UNO
+
+bool atob(string str)
+{
+    transform(str.begin(), str.end(), str.begin(), ::tolower);
+
+    if (str == "true")
+    {
+        return true;
+    }
+    return false;
+}
+
+#endif
 
 void serializeAxisStatus(Axis *ax)
 {
@@ -26,7 +57,7 @@ void serializeAxisStatus(Axis *ax)
     doc["IsReferenced"] = ax->IsReferenced;
     doc["ReferencePosition"] = ax->ReferencePosition;
 
-    serializeJson(doc, cout);
+    serializeJson(doc, Serial);
 }
 
 Axis *parseAxis(string ax)
@@ -46,15 +77,6 @@ Axis *parseAxis(string ax)
         selectedAx = NULL;
     }
     return selectedAx;
-}
-
-bool atob(string str)
-{
-    transform(str.begin(), str.end(), str.begin(), ::tolower);
-    istringstream is(str);
-    bool b;
-    is >> boolalpha >> b;
-    return b;
 }
 
 void parseSerialCommands()
@@ -86,25 +108,29 @@ void parseSerialCommands()
 
         if (cmdParts[0] == "test")
         {
-            cout << CMD_OK << endl;
+            Serial.println(CMD_OK.c_str());
         }
         else if (cmdParts[0] == "status")
         {
             if (cmdParts.size() != 2)
             {
 
-                cout << ERR_UNKNOWN_CMD << " Size (" << cmdParts.size() << ") not matching" << endl;
+                char buf[100];
+                sprintf(buf, "%s Size(%u) not matching", ERR_UNKNOWN_CMD.c_str(), cmdParts.size());
+                Serial.println(buf);
+
                 return;
             }
 
             Axis *selectedAx = parseAxis(cmdParts[1]);
             if (selectedAx == NULL)
             {
-                cout << ERR_UNKNOWN_AX << endl;
+                Serial.println(ERR_UNKNOWN_AX.c_str());
                 return;
             }
             serializeAxisStatus(selectedAx);
-            cout << endl;
+
+            Serial.println();
         }
         else if (cmdParts[0] == "steps")
         {
@@ -112,14 +138,17 @@ void parseSerialCommands()
             if (cmdParts.size() != 4)
             {
 
-                cout << ERR_UNKNOWN_CMD << " Size (" << cmdParts.size() << ")" << endl;
+                char buf[100];
+                sprintf(buf, "%s Size(%u) not matching", ERR_UNKNOWN_CMD.c_str(), cmdParts.size());
+                Serial.println(buf);
+
                 return;
             }
 
             Axis *selectedAx = parseAxis(cmdParts[1]);
             if (selectedAx == NULL)
             {
-                cout << ERR_UNKNOWN_AX << endl;
+                Serial.println(ERR_UNKNOWN_AX.c_str());
                 return;
             }
 
@@ -129,48 +158,54 @@ void parseSerialCommands()
 
             steps(selectedAx, Nsteps, isReverse);
 
-            cout << CMD_OK << endl;
+            Serial.println(CMD_OK.c_str());
         }
         else if (cmdParts[0] == "reference")
         {
             if (cmdParts.size() != 2)
             {
 
-                cout << ERR_UNKNOWN_CMD << " Size (" << cmdParts.size() << ")" << endl;
+                char buf[100];
+                sprintf(buf, "%s Size(%u) not matching", ERR_UNKNOWN_CMD.c_str(), cmdParts.size());
+                Serial.println(buf);
                 return;
             }
             Axis *selectedAx = parseAxis(cmdParts[1]);
             if (selectedAx == NULL)
             {
-                cout << ERR_UNKNOWN_AX << endl;
+                Serial.println(ERR_UNKNOWN_AX.c_str());
                 return;
             }
 
             referenceAxis(selectedAx);
-            cout << CMD_OK << endl;
+            Serial.println(CMD_OK.c_str());
         }
         else if (cmdParts[0] == "readhall")
         {
             if (cmdParts.size() != 3)
             {
 
-                cout << ERR_UNKNOWN_CMD << " Size (" << cmdParts.size() << ")" << endl;
+                char buf[100];
+                sprintf(buf, "%s Size(%u) not matching", ERR_UNKNOWN_CMD.c_str(), cmdParts.size());
+                Serial.println(buf);
                 return;
             }
             Axis *selectedAx = parseAxis(cmdParts[1]);
             if (selectedAx == NULL)
             {
-                cout << ERR_UNKNOWN_AX << endl;
+                Serial.println(ERR_UNKNOWN_AX.c_str());
                 return;
             }
 
             int Nmean = atoi(cmdParts[2].c_str());
 
-            cout << readHall(selectedAx, Nmean) << endl;
+            Serial.println(readHall(selectedAx, Nmean));
         }
         else
         {
-            cout << ERR_UNKNOWN_CMD << " (" << cmdParts[0] << ")" << endl;
+            char buf[100];
+            sprintf(buf, "%s (%s) ", ERR_UNKNOWN_CMD.c_str(), cmdParts[0].c_str());
+            Serial.println(buf);
         }
     }
 }

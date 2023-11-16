@@ -1,5 +1,8 @@
 #include <Arduino.h>
+
+#ifdef ARDUINO_AVR_UNO
 #include <ArduinoSTL.h>
+#endif
 
 #include "common.h"
 #include "sloping.h"

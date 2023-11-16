@@ -1,5 +1,9 @@
 #include <Arduino.h>
+
+#ifdef ARDUINO_AVR_UNO
 #include <ArduinoSTL.h>
+#endif
+
 #include <vector>
 #include <string.h>
 #include "common.h"
@@ -8,9 +12,7 @@ using namespace std;
 
 void referenceAxis(Axis *ax)
 {
-    cout << "start referencing" << endl;
-    // serach for max posiive change
-
+    // serach for max positive change
     float lastMeasurement = readHall(ax);
 
     size_t LEN_DBDPHI_HIST = 3;
@@ -22,8 +24,21 @@ void referenceAxis(Axis *ax)
     float maxPosValue = 0;
 
     bool isInArea = false;
+
+    // limit the angular speed with MAX_DPHI_DT
+    float phiPerstep = 360 / (float)ax->TotalSteps;
+    float tminperstep = phiPerstep / REFERENCE_ANGULAR_VELOCITY * 1000; // in ms
+    uint64_t lastStep = millis();
+
     for (steps_t x = 0; x < ax->TotalSteps; x++)
     {
+
+        float waitTime = (float)tminperstep - ((float)millis() - (float)lastStep);
+        if (waitTime > 0)
+        {
+            delay((uint64_t)waitTime);
+        }
+        lastStep = millis();
 
         step(ax);
 
@@ -43,7 +58,9 @@ void referenceAxis(Axis *ax)
         dbdphi_hist_ptr = dbdphi_hist_ptr % LEN_DBDPHI_HIST;
         lastMeasurement = val_mean;
 
-        cout << "Pos: " << ax->Position << " Val_mean: " << val_mean << " dB/dphi " << dbdphi << endl;
+        char buf[200];
+        sprintf(buf, "Pos: %i B: %f dB/dphi: %f ", (int)ax->Position, (double)val_mean, (double)dbdphi);
+        Serial.println(buf);
 
         // check if last entries are above threshold
 
@@ -55,7 +72,7 @@ void referenceAxis(Axis *ax)
 
             if (!isInArea)
             {
-                cout << "in ->" << endl;
+                Serial.println("in ->");
             }
             isInArea = true;
 
@@ -68,7 +85,7 @@ void referenceAxis(Axis *ax)
 
         if (!allTrue && isInArea)
         {
-            cout << "<- out" << endl;
+            Serial.println("<- out");
             break;
         }
     }

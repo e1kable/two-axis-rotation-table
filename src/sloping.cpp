@@ -1,4 +1,7 @@
+#ifdef ARDUINO_AVR_UNO
 #include <ArduinoSTL.h>
+#endif
+
 #include "config.h"
 #include "common.h"
 #include "sloping.h"
