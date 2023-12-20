@@ -4,8 +4,9 @@ Welcome to the Two-Axis Rotation Table project! This open-source project focuses
 
 
 <p align="middle">
-  <img src="./docs/media/two-axis-rotation-stage-thin.png" width="50" alt="Two-Axis Rotation Table" />
-  <img src="./docs/media/rotation-table-microphone-array.jpg" width="50" alt="Built table with Microphone Array" /> 
+    <img src="./docs/media/two-axis-rotation-stage-thin.png" width="49%" alt="Two-Axis Rotation Table" />
+    <img src="./docs/media/rotation-table-microphone-array.jpg" width="49%" alt="Built table with Microphone Array" /> 
+    Left: The CAD model of the Two-Axis Rotation Table. Right: The assembeld table with a microphone array on the experiment carrier.
 </p>
 
 
