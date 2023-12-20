@@ -6,4 +6,6 @@
 
 void referenceAxis(Axis *ax);
 
+void referenceAxisTwoPoint(Axis *ax);
+
 #endif

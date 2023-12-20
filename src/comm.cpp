@@ -177,7 +177,7 @@ void parseSerialCommands()
                 return;
             }
 
-            referenceAxis(selectedAx);
+            referenceAxisTwoPoint(selectedAx);
             Serial.println(CMD_OK.c_str());
         }
         else if (cmdParts[0] == "readhall")

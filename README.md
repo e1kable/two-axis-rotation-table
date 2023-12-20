@@ -2,7 +2,7 @@
 
 Welcome to the Two-Axis Rotation Table project! This open-source project focuses on the development of a versatile rotation system, featuring azimuth and elevation axes. The table is driven by two powerful NEMA-17 motors, providing precise control and flexibility for various applications.
 ![Two-Axis Rotation Table](docs/media/two-axis-rotation-stage.png)
-Other names: Rotational Actuator, Pan-and-Tilt Rotational Stage, Elevation-Azimuth Positioner
+Other names: Rotational Actuator, Pan-and-Tilt Rotational Stage, Elevation-Azimuth Positioner.
 
 ## Key Features
 
@@ -36,4 +36,7 @@ To get started with your own rotation table, check out the documentation in the 
 
 Feel free to contribute, report issues, or explore customization options. Happy rotating!
 
-<video src="docs/media/rotation-table-demo.mp4" controls title="Rotation Table Demo"></video>
+<!--video src="docs/media/rotation-table-demo.mp4" controls title="Rotation Table Demo"></video-->
+
+## Acknowledgement
+This project was partly funded by the Federal Ministry of Economic Affais and Climate Action under grant FKZ: 03EE3066D Verbundvorhaben LoCA.

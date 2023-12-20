@@ -77,7 +77,26 @@ void steps(Axis *ax, steps_t nsteps, bool reverse)
         for (size_t i = 0; i < nsteps; i++)
         {
             step(ax, reverse);
-            delay(generateSlopeSteps(i, phi, MAX_DPHI_DT_AZ, AX_AZ.TotalSteps, NstepsSlope));
+
+            uint32_t sleepTime = generateSlopeSteps(i, phi, MAX_DPHI_DT_AZ, ax->TotalSteps, NstepsSlope);
+
+            if (sleepTime > 200)
+            {
+                Serial.print("Large sleep time detected ");
+                Serial.print(sleepTime);
+                Serial.print(" ms ");
+                Serial.print(i);
+                Serial.print(" ");
+                Serial.print(phi);
+                Serial.print(" ");
+                Serial.print(ax->TotalSteps);
+                Serial.print(" ");
+                Serial.println(NstepsSlope);
+            }
+            // ensure that the sleep time does not exceed SLOPING_MAX_SLEEP_TIME
+            sleepTime = (sleepTime > SLOPING_MAX_SLEEP_TIME) ? SLOPING_MAX_SLEEP_TIME : sleepTime;
+
+            delay(sleepTime);
         }
     }
     else
