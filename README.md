@@ -44,6 +44,8 @@ To get started with your own rotation table, check out the documentation in the 
 
 Feel free to contribute, report issues, or explore customization options. Happy rotating!
 
+### Python Library
+There exists a python library to control the rotation table. It can be found under: https://github.com/e1kable/pyrotlib .
 <!--video src="docs/media/rotation-table-demo.mp4" controls title="Rotation Table Demo"></video-->
 
 ## Acknowledgement
