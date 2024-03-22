@@ -17,7 +17,7 @@ Other names: Rotational Actuator, Pan-and-Tilt Rotational Stage, Elevation-Azimu
 - **Dual Axes:** The rotation table boasts two axes – azimuth and elevation, allowing for multidimensional positioning.
 - **NEMA-17 Motors:** Powered by robust NEMA-17 stepper motors, ensuring reliable and accurate rotation.
 - **Magnetic Referencing:** Accurate axis referencing is achieved through the use of magnets and Hall sensors, providing a reliable and repeatable starting point.
-- **Arduino MCU and CNC Shield:** The electronics are built upon the Arduino microcontroller unit (MCU) and a CNC shield, offering a user-friendly and customizable platform for control.
+- **Arduino MCU and CNC Shield:** The electronics are built upon the Arduino R4 Minima microcontroller unit (MCU) and a CNC shield, offering a user-friendly and customizable platform for control.
 
 ## Use Cases
 
@@ -33,7 +33,13 @@ Optimize the positioning of microphone arrays for audio capture, facilitating th
 
 ## Getting Started
 
-To get started with your own rotation table, check out the documentation in the `docs` directory. You'll find comprehensive information on assembly, wiring, and programming.
+To get started with your own rotation table, check out the documentation in the `design-files` directory. There you'll find the FreeCAD design files which can be exported to .stl files for 3-D printing. The project is split into three larger components:
+
+1. The azimuth rotation stage (`design-files/elevation-rotation-table.FCStd`)
+2. the elevation rotation stage (`design-files/azimuth-rotation-table.FCStd`)
+3. the housing for the arduino (`design-files/electronics-housing.FCStd`)
+
+Ech file consists of serveral parts, which can be serperately exported and printed.
 
 ## Repository Structure
 
