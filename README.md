@@ -35,8 +35,8 @@ Optimize the positioning of microphone arrays for audio capture, facilitating th
 
 To get started with your own rotation table, check out the documentation in the `design-files` directory. There you'll find the FreeCAD design files which can be exported to .stl files for 3-D printing. The project is split into three larger components:
 
-1. The azimuth rotation stage (`design-files/elevation-rotation-table.FCStd`)
-2. the elevation rotation stage (`design-files/azimuth-rotation-table.FCStd`)
+1. The azimuth rotation stage (`design-files/azimuth-rotation-table.FCStd`)
+2. the elevation rotation stage (`design-files/elevation-rotation-table.FCStd`)
 3. the housing for the arduino (`design-files/electronics-housing.FCStd`)
 
 Ech file consists of serveral parts, which can be serperately exported and printed.
